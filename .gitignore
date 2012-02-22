@@ -1,0 +1,5 @@
+# Ignore the IDE-settings
+ManagerFramework.iml
+
+# Ignore any Java Byte-code
+*.class
