@@ -1,6 +1,12 @@
 package ita23.managerframework.time;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The TimeManager manage the time interval and fired a event,
@@ -15,8 +21,8 @@ public enum TimeManager {
     /**The List hold all declared classes */
     private List<TimeListener> timeListener;
 
-    /**the final time in milli second for a week, in this case we used 10 minutes for one week */
-    private final long dayOver = Math.round(1 * Math.pow(10,4));
+    /**the final time in  second for a week, in this case we used 10 minutes for one week */
+    private final long dayOver = 5;
 
     /**The timer variable is to start the Timer class */
     private Timer time = new Timer("week", true);
@@ -46,17 +52,18 @@ public enum TimeManager {
         // TODO Synchronize the list in some way (use a queue?) so that listeners can be unregistered.
         timeListener = new ArrayList<TimeListener>();
 
-        time.schedule(new TimerTask() {
+        ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+        service.scheduleWithFixedDelay(new TimerTask(){
             @Override
             public void run() {
-                try{
-                    executeTime();
-                } catch (ConcurrentModificationException e){
-                    /** God, this is so dirty.. I feel so bad about this...
-                     * I'm going to kill myself for this...*/
-                }
-            }
-        }, dayOver, dayOver);
+                //      try{
+                executeTime();
+                //    } catch (ConcurrentModificationException e){
+                /** God, this is so dirty.. I feel so bad about this...
+                 * I'm going to kill myself for this...*/
+                //   }
+            }}
+            , dayOver, dayOver, TimeUnit.SECONDS);
     }
 
     /**
@@ -120,7 +127,13 @@ public enum TimeManager {
      * @param timeList is the instance from the class which implements the TimeListener.
      */
     public void removeTimeListener(TimeListener timeList) {
-        timeListener.remove(timeList);
+
+                timeListener.remove(timeList);
+
+
+
+
+
     }
 
     /**
