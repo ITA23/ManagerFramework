@@ -44,6 +44,14 @@ public enum JobManager implements DurationOverListener, TimeListener {
     }
 
     /**
+     * Check, if the player is currently working on a {@code Job}.
+     * @return {@code true} if so, {@code false} otherwise.
+     */
+    public boolean isWorking(){
+        return (this.currentJob != null);
+    }
+
+    /**
      * Assign a new Job to the staff.
      * @param job the job the staff should work on.
      * @throws CantTakeJobException if the job could not be taken.
